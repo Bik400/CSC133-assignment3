@@ -183,28 +183,31 @@ class SnakeGame extends SurfaceView implements Runnable{
     public void update() {
 
         // Move the snake
-        mSnake.move();
+        if (!mPausedGame) {
+            mSnake.move();
 
-        // Did the head of the snake eat the apple?
-        if(mSnake.checkDinner(mApple.getLocation())){
-            // This reminds me of Edge of Tomorrow.
-            // One day the apple will be ready!
-            mApple.spawn();
+            // Did the head of the snake eat the apple?
+            if(mSnake.checkDinner(mApple.getLocation())){
+                // This reminds me of Edge of Tomorrow.
+                // One day the apple will be ready!
+                mApple.spawn();
 
-            // Add to  mScore
-            mScore = mScore + 1;
+                // Add to  mScore
+                mScore = mScore + 1;
 
-            // Play a sound
-            mSP.play(mEat_ID, 1, 1, 0, 0, 1);
+                // Play a sound
+                mSP.play(mEat_ID, 1, 1, 0, 0, 1);
+            }
+
+            // Did the snake die?
+            if (mSnake.detectDeath()) {
+                // Pause the game ready to start again
+                mSP.play(mCrashID, 1, 1, 0, 0, 1);
+
+                mPaused =true;
+            }
         }
 
-        // Did the snake die?
-        if (mSnake.detectDeath()) {
-            // Pause the game ready to start again
-            mSP.play(mCrashID, 1, 1, 0, 0, 1);
-
-            mPaused =true;
-        }
 
     }
 
@@ -257,6 +260,12 @@ class SnakeGame extends SurfaceView implements Runnable{
             mPaint.setColor(Color.argb(255, 255,255,255));
             mCanvas.drawText("Pause", 900, 100, mPaint);
 
+            if (mPausedGame) {
+                mPaint.setColor(Color.argb(255, 0, 0, 0));
+                mPaint.setTextSize(150);
+                mCanvas.drawText("Game is paused", 600, 500, mPaint);
+            }
+
 
             // Unlock the mCanvas and reveal the graphics for this frame
             mSurfaceHolder.unlockCanvasAndPost(mCanvas);
@@ -270,11 +279,19 @@ class SnakeGame extends SurfaceView implements Runnable{
 
         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_UP:
-                if (mPaused) {
+                if (mPausedGame) {
+                    mPausedGame = false;
+                    return true;
+                } else {
+                    if (touchX >= mPauseButtonLeft && touchX <= mPauseButtonRight && touchY >= mPauseButtonTop && touchY <= mPauseButtonBottom) {
+                        mPausedGame = true;
+                        return true;
+                    }
+                }
 
+                if (mPaused) {
                     mPaused = false;
                     newGame();
-
                     // Don't want to process snake direction for this tap
                     return true;
                 }
