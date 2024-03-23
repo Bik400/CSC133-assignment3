@@ -220,7 +220,7 @@ class SnakeGame extends SurfaceView implements Runnable{
             mCanvas = mSurfaceHolder.lockCanvas();
 
             // Fill the screen with a color
-            mCanvas.drawColor(Color.argb(255, 150, 150, 150));
+            mCanvas.drawColor(Color.argb(255, 150, 255, 150));
 
 
             // Set the size and color of the mPaint for the text
