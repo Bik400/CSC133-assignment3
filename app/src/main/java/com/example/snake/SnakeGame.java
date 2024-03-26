@@ -102,10 +102,12 @@ class SnakeGame extends SurfaceView implements Runnable{
         mPaint = new Paint();
 
         // Call the constructors of our two game objects
-        mApple = new Apple(context,
-                new Point(NUM_BLOCKS_WIDE,
-                        mNumBlocksHigh),
-                blockSize);
+//        mApple = new Apple(context,
+//                new Point(NUM_BLOCKS_WIDE,
+//                        mNumBlocksHigh),
+//                blockSize);
+        mApple = new Apple();
+        mApple.setApple(context, new Point(NUM_BLOCKS_WIDE,mNumBlocksHigh), blockSize);
 
         mSnake = new Snake(context,
                 new Point(NUM_BLOCKS_WIDE,
@@ -220,7 +222,7 @@ class SnakeGame extends SurfaceView implements Runnable{
             mCanvas = mSurfaceHolder.lockCanvas();
 
             // Fill the screen with a color
-            mCanvas.drawColor(Color.argb(255, 150, 255, 150));
+            mCanvas.drawColor(Color.argb(255, 150, 150, 150));
 
 
             // Set the size and color of the mPaint for the text
@@ -236,7 +238,7 @@ class SnakeGame extends SurfaceView implements Runnable{
 
             mPaint.setTextSize(80);
             mCanvas.drawText("Bikram", 1900,80,mPaint);
-            mCanvas.drawText("Brandon", 1900, 160, mPaint);
+            mCanvas.drawText("Brandon", 1850, 160, mPaint);
 
             // Draw the apple and the snake
             mApple.draw(mCanvas, mPaint);
@@ -268,7 +270,7 @@ class SnakeGame extends SurfaceView implements Runnable{
             if (mPausedGame) {
                 mPaint.setColor(Color.argb(255, 0, 0, 0));
                 mPaint.setTextSize(150);
-                mCanvas.drawText("Game is paused", 600, 500, mPaint);
+                mCanvas.drawText("Game is paused", 500, 500, mPaint);
             }
 
 
